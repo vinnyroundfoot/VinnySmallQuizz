@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        <script type="text/javascript" src="js/VinnySmallQuizz.js"></script> 
+        
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        
+      
+        <style type="text/css">
+ 
+            .quizz-ul-class  {
+                list-style-type: none;
+            } 
+            .quizz-li-class  {
+                padding-bottom : 10px;
+            }
+            
+            .quizz-option-class {
+                margin-right:10px !important;
+            }
+            
+            .quizz-question-class {
+                
+            }
+            
+            .main {
+                margin-top:40px;
+            }
+            
+            
+
+            .quizz-rem-class {
+                padding: 20px;
+                margin: 20px 0;
+                border: 1px solid #eee;
+                border-left-width: 5px;
+                border-radius: 3px;
+                border-left-color: #1b809e;
+            }            
+            
+            
+        </style>
+        
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 main">
+                    <div id="message" class="alert alert-danger" role="alert">
+                        
+                    </div>
+                    <div id="question">
+                        
+                    </div>
+        
+                        <div id="controles">
+                            <input class="btn btn-primary" type="button" id="prec" value="précédent" />
+                            <input class="btn btn-primary" type="button" id="suivant" value="suivant" />
+                        </div>
+
+                    
+                    <div id="comment" style="background-color: #1b809e"></div>
+                    
+                    </div>
+            </div>
+        </div>
+   
+        
+       
+    <script type="text/javascript">
+    
+    
+    var questions = [
+        { id : 1, 
+          lib : "Vous êtes propriétaire(s) du logement, objet de la demande de crédit et vous l'occupez actuellement personnellement",
+          lib_css_class : 'test',
+          image : 'images/test1.jpg',
+          options : 
+                  [ { lib :'oui', destination : 2, lib_css_class:'toto'},
+                    { lib :'non', destination : 20}
+                    
+                  ]
+        },
+        { id : 2, 
+          lib : "Le logement a-t'il au moins 10 ans",
+          defaultChoice: 2,
+          options : 
+                  [ { image : 'images/test1.jpg', destination : 3 },
+                    { lib :'non', wrong_message : "Votre demande n'est malheureusement pas recevable"},
+                    { lib :'peut-être', end_message : "Vous n'êtes pas sérieux"},
+                    { lib :'je veux autre chose', callback_function : function(){VinnySmallQuizz.createQuestion(1);} }
+                  ]
+        },
+        
+        { id : 3, 
+          lib : "Le revenu imposable globalement (*) de votre ménage relatif à l’avant-dernière année suivant votre (vos) avertissement(s)-extrait(s) de rôle est-il inférieur ou égal à 93.000 EUR ?",
+          options : 
+                  [ { lib :'oui', destination : 4},
+                    { lib :'non', wrong_message : "Votre demande n'est malheureusement pas recevable"}
+                  ],
+          comment : "* Les <b>revenus</b> à prendre en considération sont ceux recueillis au cours de l’avant-dernière année précédant celle de la demande de prêt. Par exemple : pour une demande introduite en 2016, c’est le revenu imposable recueilli en 2014 qui entre en ligne de compte."       
+        },
+        
+        { id : 4, 
+          lib : "Combien d’enfants à charge (*) avez-vous ?",
+          options : 
+                  [ { lib :'0, 1, 2', destination : 5 },
+                    { lib :'3 ou + ', destination : 6}
+                  ],
+          comment : "<span style='display:block;text-align:justify'>(*) a) L’enfant pour lequel des allocations familiales ou d’orphelins sont attribuées au demandeur ou à la personne avec laquelle il vit habituellement\n\
+                      <br>b) L’enfant pour lequel le demandeur ou la personne avec laquelle il vit habituellement , n’est pas attributaire de telles allocations mais que le Fonds estime être effectivement à leur charge, s’ils en apportent la preuve \n\
+                      <br>c) L’enfant à naître, conçu depuis au moins 90 jours à la date d’ouverture du dossier, la preuve étant fournie par une attestation médicale\n\
+                      <br>d) Le demandeur reconnu handicapé ainsi que son conjoint ou la personne avec laquelle il vit habituellement, ou encore chaque personne affectée d’un tel handicap, pour autant qu’il existe entre elle et le demandeur, son conjoint ou la personne avec laquelle il vit habituellement, un lien de parenté jusqu’au troisième degré et qui est domicilié ou en cours de domiciliation dans le logement objet de la demande de crédit\n\
+                      <br>e) Le parent du demandeur domicilié ou en cours de domiciliation dans le logement objet de la demande de crédit, jusqu’au troisième degré et/ou la personne avec qui ce parent est/à été marié ou vit (a vécu) habituellement ; l’une de ces personnes étant âgée d’au moins 60 ans à la date d’ouverture du dossier\n\
+                      </span>  "
+            
+        }  ,
+        
+        
+        { id : 5, 
+          lib : "Avez-vous un crédit en cours de remboursement au Fonds du Logement ?",
+          options : 
+                  [ { lib :'oui', destination : 6 },
+                    { lib :'non', wrong_message : "Dans votre cas, la demande de crédit doit être introduite auprès de la Société Wallonne du Crédit Social <a href=\"http://www.swcs.be\">www.SWCS.be</a>"}
+                  ]
+        }  ,
+                
+        { id : 6, 
+          lib : "Bénéficiez-vous actuellement d’un crédit à 0 % (Ecopack) ?",
+          options : 
+                  [ { lib :'oui', destination : 7 },
+                    { lib :'non', destination : 9 }
+                  ]
+        }  ,        
+  
+        { id : 7, 
+          lib : "Avez-vous signé votre contrat de crédit depuis au - 5 ans ?",
+          options : 
+                  [ { lib :'oui', destination : 8 },
+                    { lib :'non', wrong_message : "Votre demande n'est malheureusement pas recevable"}
+                  ]
+        }  ,                
+        
+        
+        { id : 8, 
+          lib : "Votre crédit est-il totalement remboursé ?",
+          options : 
+                  [ { lib :'oui', destination : 9},
+                    { lib :'non', wrong_message : "Votre demande n'est malheureusement pas recevable"}
+                  ]
+        }, 
+        
+        { id : 9, 
+          lib : "Sur base des informations communiquées et sous réserve de vérification, votre demande s’avère, à priori, recevable.",
+          options : 
+                  [ { lib :"Je souhaite introduire ma demande de crédit.",  url:"http://www.flw.be/index.php/Ecopack?task=view&id=440"},
+                    { lib :"Je souhaite obtenir des renseignements complémentaires et qu’un conseiller me recontacte.",  url:"http://www.flw.be/index.php/Ecopack?task=view&id=461"}
+                  ]
+        },          
+        
+        { id : 20, 
+          lib : "Vous êtes propriétaire(s) du logement, objet de la demande de crédit, que vous donnez en location ou que vous mettez gratuitement à la disposition d’un membre de votre famille ?",
+          options : 
+                  [ { lib :'oui', destination : 22},
+                    { lib :'non', destination : 0, wrong_message : "Votre demande n'est malheureusement pas recevable"}
+                  ]
+        },    
+        
+        { id : 22, 
+          lib : "Le logement a-t'il au moins 10 ans",
+          options : 
+                  [ { lib :'oui ', destination : 23 },
+                    { lib :'non', destination : 0, wrong_message : "Votre demande n'est malheureusement pas recevable"}
+                  ]
+        }, 
+        
+        { id : 23, 
+          lib : "Le revenu imposable globalement (*) de votre ménage relatif à l’avant-dernière année suivant votre (vos) avertissement(s)-extrait(s) de rôle est-il inférieur ou égal à 93.000 EUR ?",
+          options : 
+                  [ { lib :'oui', destination : 24},
+                    { lib :'non', destination : 0, wrong_message : "Votre demande n'est malheureusement pas recevable"}
+                  ],
+          comment : "* Les revenus à prendre en considération sont ceux recueillis au cours de l’avant-dernière année précédant celle de la demande de prêt. Par exemple : pour une demande introduite en 2016, c’est le revenu imposable recueilli en 2014 qui entre en ligne de compte."       
+        }, 
+        
+        { id : 24, 
+          lib : "Bénéficiez-vous actuellement d’un crédit à 0% pour ce même logement ? (Ecopack)",
+          options : 
+                  [ { lib :'oui', destination : 25 },
+                    { lib :'non', destination : 26 }
+                  ]
+        }  , 
+        
+        { id : 25, 
+          lib : "Avez-vous signé votre contrat de crédit depuis au - 5 ans ?",
+          options : 
+                  [ { lib :'oui', destination : 26 },
+                    { lib :'non', destination : 0, wrong_message : "Votre demande n'est malheureusement pas recevable"}
+                  ]
+        },          
+        
+        { id : 26, 
+          lib : "Le montant global des écopacks et des rénopacks déjà obtenus a-t-il dépassé 60.000 EUR ?",
+          options : 
+                  [ { lib :'oui', destination : 0, wrong_message : "Votre demande n'est malheureusement pas recevable" },
+                    { lib :'non', destination : 27}
+                  ]
+        }, 
+        
+        
+        { id : 27, 
+          lib : "Sur base des informations communiquées et sous réserve de vérification, votre demande s’avère, à priori, recevable.",
+          options : 
+                  [ { lib :"Je souhaite introduire ma demande de crédit.",  destination:2000, url:"http://www.flw.be/index.php/Ecopack?task=view&id=457"},
+                    { lib :"Je souhaite obtenir des renseignements complémentaires et qu’un conseiller me recontacte.", destination:2000, url:"http://www.flw.be/index.php/Ecopack?task=view&id=461"}
+                  ]
+        }           
+    ]; 
+    
+    VinnySmallQuizz.init(questions , {'question_box' :'#question', 'previous_control': '#prec','next_control':'#suivant'} );
+    
+</script>
+    </body>
+
+    
+</html>
