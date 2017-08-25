@@ -79,8 +79,39 @@ and open the template in the editor.
        
     <script type="text/javascript">
     
+    var questions = [ 
+        { 
+            id: 1,
+            lib: "Combien font 3 + 2 ?",
+            options : [
+                { lib : '4', wrong_message : "Your answer is wrong"},
+                { lib : '5', destination: 2 },
+                { lib : 'Stop', end_message:"Stopped" }
+            ],
+            right_answer : 1
+        },
+        { 
+            id: 2,
+            lib: "Combien font 3 x 2 ?",
+            options : [
+                { lib : '6', destination: 3 },
+                { lib : '5', wrong_message : "Your answer is wrong. Try Again", destination:3},
+            ],
+            right_answer : 0
+        },
+         { 
+            id: 3,
+            lib: "Combien font 6 / 2 ?",
+            options : [
+                { lib : '3', destination: 3 },
+                { lib : '6', wrong_message : "Your answer is wrong. Try Again"},
+            ],
+            right_answer : 0
+        }        
+       
+    ];
     
-    var questions = [
+    var questions1 = [
         { id : 1, 
           lib : "Vous êtes propriétaire(s) du logement, objet de la demande de crédit et vous l'occupez actuellement personnellement",
           lib_css_class : 'test',

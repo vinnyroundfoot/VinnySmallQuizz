@@ -1,4 +1,5 @@
  (function (alias) {
+    
      // begin SmallJ
     var SmallJ = {
         /* function ready
@@ -295,6 +296,7 @@
     Quizz.start = function (questions, elClass ) {
       Quizz.questions = questions;  
       
+           
       if (elClass) {
         Quizz.elClass = elClass;
      }
@@ -426,6 +428,15 @@
         }); // end of SmallJ.ready
     }; // end of Quizz.init
 
+    Quizz.getQuestions = function() {
+        return Quizz.questions;
+    }
+    
+    Quizz.getCurrentQuestion = function() {
+        return Quizz.currentQuestion;
+    }
+
+
     // RETURN QUIZZ OBJECT
     // -------------------
     if (typeof alias === "string" && alias.length > 0) {
@@ -438,6 +449,8 @@
         SmallJ : SmallJ,
         currentQuestion : Quizz.currentQuestion,
         createQuestion : Quizz.createQuestion,
+        getQuestions : Quizz.getQuestions,
+        getCurreentQuestion : Quizz.getCurrentQuestion,
         init : Quizz.init
     };
 
